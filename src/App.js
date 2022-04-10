@@ -6,14 +6,14 @@ import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 
 
 const App = () => {
-  const [articles, setArticles] = useState([])
+  const [movies, setMovies] = useState([])
 
   const getDate = async () => {
           
     try{
-      const {data} = await axios.get("https://newsapi.org/v2/everything?q=tesla&from=2022-03-10&sortBy=publishedAt&apiKey=f1c87e2bb86248de9f9492e513f93e1f")  
+      const {data} = await axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=8597e491ed6e80f0de12e349eb60ea6e&language=en-US&page=1")  
       console.log(data)
-      setArticles(data.articles)
+      setMovies(data.results)
     }catch(e){
       console.log(e)
     }
@@ -25,18 +25,18 @@ const App = () => {
   }, [])
 
 
-  
+
   return (
     <Container>
       <Row>
-       {articles.map(article => (
+       {movies.map(movie => (
         <Col>
          <Card style={{ width: '18rem' }}>
-          <Card.Img variant="top" src={article.urlToImage ? article.urlToImage : require("./assets/emptyImage.png")} />
+          <Card.Img variant="top" src={movie.poster_path ? "https://image.tmdb.org/t/p/w500"+movie.poster_path : require("./assets/emptyImage.png")} />
           <Card.Body>
-           <Card.Title>{article.title.slice(0, 50)}</Card.Title>
+           <Card.Title>{movie.title.slice(0, 50)}</Card.Title>
            <Card.Text>
-           {article.description.slice(0,100)}
+           {movie.overview.slice(0,100)}
          </Card.Text>
          <Button variant="primary">Go somewhere</Button>
        </Card.Body>
